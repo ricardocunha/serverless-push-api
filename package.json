@@ -1,0 +1,20 @@
+{
+  "name": "serverless-push-api",
+  "version": "1.0.0",
+  "description": "This example demostrates how to use a serverless framework in aws lambda for FCM push notifications",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "serverless",
+    "aws-lambda"
+  ],
+  "author": "Ricardo Cunha",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "fcm-push": "^1.1.2"
+  }
+}
