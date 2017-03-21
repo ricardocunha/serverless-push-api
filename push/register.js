@@ -1,50 +1,45 @@
 'use strict';
 
-var FCM = require('fcm-push');
+var FCM = require('fcm-node');
 
 module.exports.create = (event, context, callback) => {
+
   var serverKey = process.env.FIREBASE_SERVER_KEY;
   var fcm = new FCM(serverKey);
-  
-  const data = JSON.parse(event);
-  console.log("subject", data.subject);
-  console.log('message', data.message);
-  console.log('deviceToken', data.deviceToken);
 
-
-/*
-  const timestamp = new Date().getTime();
-
-  if (typeof data.text !== 'string') {
+  if (event.deviceToken == 'undefined') {
     console.error('Validation Failed');
-    callback(new Error('Couldn\'t create the todo item.'));
+    callback(new Error('Couldn\'t create the send item.'));
     return;
   }
 
   var message = {
-      to: data.deviceToken, // required fill with device token or topics
-      collapse_key: 'your_collapse_key',
-      data: {
-          your_custom_data_key: 'your_custom_data_value'
-      },
+      to: event.deviceToken,
       notification: {
-          title: 'Title of your push notification',
-          body: 'Body of your push notification'
+          title: event.subject,
+          body: event.message
       }
   };
+
+  var returnMessage = "";
 
   //callback style
   fcm.send(message, function(err, response){
       if (err) {
-          console.log("Something has gone wrong!");
+          console.log("Something has gone wrong!",err);
+          returnMessage ="Error: "+err;
+
       } else {
           console.log("Successfully sent with response: ", response);
+          returnMessage ="Success: "+response;
       }
+      const res = {
+        statusCode: 200,
+        body: JSON.stringify({
+          message: returnMessage,
+          input: event,
+        }),
+      };
+      callback(null, res);
   });
-*/
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify(result.Item),
-  };
-  callback(null, response);
 };
